@@ -1,0 +1,10 @@
+{
+  "name": "puppeteerscreenshot",
+  "version": "1.0.0",
+  "description": "Puppeteer Script",
+  "dependencies": {
+    "puppeteer-core": "^5.3.1",
+    "chrome-aws-lambda": "^5.3.1",
+    "iltorb": "^2.4.5"
+  }
+}
