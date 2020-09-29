@@ -1,0 +1,23 @@
+name: Base64ToFile
+comment: 'Decodes single base64 and stores as file'
+commonfields:
+  id: e2dbe63a-276b-49aa-8235-45883b61f926
+  version: 4
+vcShouldKeepItemLegacyProdMachine: false
+script: ''
+type: python
+tags: []
+enabled: true
+args:
+- name: Filename
+  required: true
+- name: Input
+  required: true
+outputs:
+- {}
+scripttarget: 0
+subtype: python3
+pswd: ""
+runonce: false
+dockerimage: demisto/python3:3.8.5.11789
+runas: DBotWeakRole

@@ -1,0 +1,187 @@
+name: CertificateTransparency
+display: CertificateTransparency
+category: Data Enrichment & Threat Intelligence
+description: Downloads newly assigned certificates from the global certificate transparency lists
+commonfields:
+  id: CertificateTransparency
+  version: -1
+configuration:
+  - display: Use system proxy settings
+    name: proxy
+    defaultvalue: ''
+    type: 8
+    required: false
+  - display: Redis Host
+    name: redis_host
+    type: 0
+    required: true
+  - display: Redis Port
+    name: redis_port
+    type: 0
+    required: true
+    defaultvalue: '6379'
+  - display: Redis Password
+    name: redis_password
+    type: 4
+    required: true
+  - display: Redis DB
+    name: redis_db
+    defaultvalue: '0'
+    type: 0
+    required: false
+  - display: Manual blocklist to prevent downloading CT logs from operator
+    name: blocklist
+    type: 12
+    required: false
+    defaultvalue: ctlog.api.venafi.com\nct.izenpe.com\nct.startssl.com\nctlog.wosign.com\nct.izenpe.com\nlog.certly.io\nsirius.ws.symantec.com\nvega.ws.symantec.com\nct.ws.symantec.com\nct2.digicert-ct.com
+script:
+  dockerimage: demisto/transparency:latest
+  longRunning: false
+  longRunningPort: false
+  runonce: false
+  script: ''
+  subtype: python3
+  type: python
+  commands:
+    - name: get-operators
+      description: Fetches list of transparency log operators
+      arguments:
+        - name: Url
+          required: true
+          default: true
+          isArray: false
+          description: Base url containing the list of transparency log operators
+        - name: File
+          required: true
+          default: true
+          isArray: false
+          description: Which file to use containing the operators list
+      outputs:
+        - contextPath: CertificateTransparency.Operator.Url
+          description: Log url of transparency operator
+          type: string
+        - contextPath: CertificateTransparency.Operator.Name
+          description: Name of transparency operator
+          type: string
+        - contextPath: CertificateTransparency.Operator.Description
+          description: Description of operators' log
+          type: string
+    - name: get-tree-size
+      description: Fetches tree size of CT operator log
+      arguments:
+        - name: Url
+          required: true
+          default: true
+          isArray: false
+          description: Base url of the operator CT log
+      outputs:
+        - contextPath: CertificateTransparency.Tree.Url
+          description: Log url of transparency operator
+          type: string 
+        - contextPath: CertificateTransparency.Tree.Size
+          description: Size of CT tree in number of logs
+          type: string
+        - contextPath: CertificateTransparency.Tree.Date
+          description: Date of latest change
+          type: string
+        - contextPath: CertificateTransparency.Tree.RootHash
+          description: CT Operator root hash
+          type: string 
+    - name: get-records
+      description: Get records from CT operator log
+      arguments:
+        - name: Url
+          required: true
+          default: true
+          isArray: false
+          description: Base url of the operator CT log
+        - name: Start
+          required: false
+          default: false
+          isArray: false
+          description: Start from entry number in CT log
+        - name: End
+          required: true
+          default: true
+          isArray: false
+          description: End at entry number in CT log
+        - name: MaxLag
+          required: false
+          default: true
+          isArray: false
+          description: Maximum amount of records allowed to be behind untill counter is reset
+      outputs:
+        - contextPath: CertificateTransparency.Cache.Key
+          description: Key/ID of Cache object containing decoded certificates
+          type: string
+        - contextPath: CertificateTransparency.Cache.Url
+          description: Source URL of records source
+          type: string
+        - contextPath: CertificateTransparency.Cache.Count
+          description: Count of records decoded
+          type: string
+    - name: ct-match-regex
+      description: Match common name of certificate using regex
+      arguments:
+        - name: Key
+          required: true
+          default: true
+          isArray: false
+          description: Key/ID of Cache object containing decoded certificates
+        - name: RegexList
+          required: true
+          default: false
+          isArray: true
+          description: List of regular expressions to match
+      outputs:
+        - contextPath: CertificateTransparency.Cert.Issuer.C
+          description: Issuer CountryName
+          type: string 
+        - contextPath: CertificateTransparency.Cert.Issuer.ST
+          description: Certificate ST
+          type: string
+        - contextPath: CertificateTransparency.Cert.Issuer.O
+          description: Issuer Organization
+          type: string
+        - contextPath: CertificateTransparency.Cert.Issuer.OU
+          description: Issuer OrganizationalUnit
+          type: string
+        - contextPath: CertificateTransparency.Cert.Issuer.CN
+          description: Issuer CommonName
+          type: string
+        - contextPath: CertificateTransparency.Cert.NotAfter
+          description: Certificate not valid after date
+          type: string 
+        - contextPath: CertificateTransparency.Cert.NotBefore
+          description: Certificate not valid before date
+          type: string
+        - contextPath: CertificateTransparency.Cert.Serial
+          description: Certificate serial
+          type: string 
+        - contextPath: CertificateTransparency.Cert.Fingerprint
+          description: Certificate fingerprint
+          type: string
+        - contextPath: CertificateTransparency.Cert.Subject.CN
+          description: Subject CommonName
+          type: string 
+        - contextPath: CertificateTransparency.Cert.Subject.C
+          description: Subject CountryName
+          type: string 
+        - contextPath: CertificateTransparency.Cert.Subject.S
+          description: Subject State or Provice
+          type: string 
+        - contextPath: CertificateTransparency.Cert.Subject.L
+          description: Subject Locality
+          type: string
+        - contextPath: CertificateTransparency.Cert.Subject.OU
+          description: Subject OrganizationalUnit
+          type: string
+        - contextPath: CertificateTransparency.Cert.Subject.O
+          description: Subject Organization
+          type: string
+        - contextPath: CertificateTransparency.Cert.Subject.SerialNumber
+          description: Log url of transparency operator
+          type: string 
+fromversion: 5.0.0
+tests:
+  - Run all tests

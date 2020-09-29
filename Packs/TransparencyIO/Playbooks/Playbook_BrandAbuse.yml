@@ -1,0 +1,298 @@
+id: e7562617-8c9d-4f33-853b-2f020b5f3f1f
+version: 70
+vcShouldKeepItemLegacyProdMachine: false
+name: BrandAbuse
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: dd538e0f-9dc8-4c4a-8a46-1b72ee1941e6
+    type: start
+    task:
+      id: dd538e0f-9dc8-4c4a-8a46-1b72ee1941e6
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "1"
+      - "3"
+      - "6"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "1":
+    id: "1"
+    taskid: 28e78499-20c5-4c0e-8958-4895699add5d
+    type: regular
+    task:
+      id: 28e78499-20c5-4c0e-8958-4895699add5d
+      version: -1
+      name: GCloudCreateScreenshot
+      description: Executes a Google Cloud function.
+      script: Google Cloud Functions|||google-cloud-function-execute
+      type: regular
+      iscommand: true
+      brand: Google Cloud Functions
+    nexttasks:
+      '#none#':
+      - "5"
+    scriptarguments:
+      function_name:
+        simple: puppeteer-screenshot
+      parameters:
+        simple: url:${inputs.DetectionUrl}
+      region: {}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 350,
+          "y": 230
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "3":
+    id: "3"
+    taskid: a37c7c62-5db6-4b4c-8958-3f86dc34fb27
+    type: regular
+    task:
+      id: a37c7c62-5db6-4b4c-8958-3f86dc34fb27
+      version: -1
+      name: URLSSLVerification
+      description: Verify URL SSL certificate
+      scriptName: URLSSLVerification
+      type: regular
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      url:
+        simple: https://${inputs.DetectionUrl}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 230
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "4":
+    id: "4"
+    taskid: 8f34ddff-4c4d-4f2c-8d09-2505bb727d68
+    type: regular
+    task:
+      id: 8f34ddff-4c4d-4f2c-8d09-2505bb727d68
+      version: -1
+      name: DetectLogos
+      description: Detects brand logos in the given image.
+      script: Google Vision AI|||google-vision-detect-logos
+      type: regular
+      iscommand: true
+      brand: Google Vision AI
+    nexttasks:
+      '#none#':
+      - "7"
+    scriptarguments:
+      entry_id:
+        complex:
+          root: InfoFile
+          accessor: EntryID
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 350,
+          "y": 640
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "5":
+    id: "5"
+    taskid: a048d106-671e-45ea-8b1a-34514c5fc5db
+    type: regular
+    task:
+      id: a048d106-671e-45ea-8b1a-34514c5fc5db
+      version: -1
+      name: DecodeBase64Image
+      description: Decodes single base64 and stores as file
+      scriptName: Base64ToFile
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    scriptarguments:
+      Filename:
+        simple: ScreenshotImage
+      Input:
+        simple: ${GoogleCloudFunctions.Execution.result}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 350,
+          "y": 430
+        }
+      }
+    note: false
+    evidencedata:
+      description:
+        simple: Screenshot of  ${inputs.DetectionUrl}
+      customfields: {}
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "6":
+    id: "6"
+    taskid: a5087050-4b4c-4721-8cef-64a40e295bb7
+    type: regular
+    task:
+      id: a5087050-4b4c-4721-8cef-64a40e295bb7
+      version: -1
+      name: GetWhois
+      description: Provides data enrichment for domains.
+      script: Whois|||domain
+      type: regular
+      iscommand: true
+      brand: Whois
+    scriptarguments:
+      domain:
+        simple: ${inputs.DetectionUrl}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": -90,
+          "y": 230
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "7":
+    id: "7"
+    taskid: e9e6dc5e-54cb-4401-8833-5db1af7c07ae
+    type: condition
+    task:
+      id: e9e6dc5e-54cb-4401-8833-5db1af7c07ae
+      version: -1
+      name: IsLogoMatching
+      description: Check whether the values provided in arguments are equal. If either
+        of the arguments are missing, no is returned.
+      scriptName: AreValuesEqual
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "8"
+    scriptarguments:
+      left:
+        simple: ${GoogleVisionAPI.Logo.Description}
+      right: {}
+    results:
+    - AreValuesEqual
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 350,
+          "y": 830
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "8":
+    id: "8"
+    taskid: 7ba92945-1672-4c44-8a42-ab88000103f3
+    type: regular
+    task:
+      id: 7ba92945-1672-4c44-8a42-ab88000103f3
+      version: -1
+      name: IncreaseIncidentSeverity
+      description: Optionally increases the incident severity to the new value if
+        it is greater than the existing severity.
+      scriptName: IncreaseIncidentSeverity
+      type: regular
+      iscommand: false
+      brand: ""
+    scriptarguments:
+      severity:
+        simple: High
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 350,
+          "y": 1030
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1075,
+        "width": 1380,
+        "x": -90,
+        "y": 50
+      }
+    }
+  }
+inputs:
+- key: DetectionUrl
+  value:
+    complex:
+      root: incident
+      accessor: detectionurl
+  required: false
+  description: ""
+  playbookInputQuery: null
+outputs:
+- contextPath: URL
+  description: The URL object
+- contextPath: URL.Data
+  description: The URL address
+  type: string
+- contextPath: URL.Malicious
+  description: The malicious description
+- contextPath: DBotScore
+  description: The DBotScore object

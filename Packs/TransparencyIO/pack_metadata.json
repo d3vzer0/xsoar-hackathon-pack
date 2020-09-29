@@ -1,0 +1,26 @@
+{
+    "name": "TransparencyIO",
+    "description": "XSOAR Pack to analyse certificate transparency for potential phishing domains",
+    "support": "community",
+    "currentVersion": "1.0.0",
+    "author": "Joey Dreijer",
+    "url": "https://live.paloaltonetworks.com/t5/cortex-xsoar-discussions/bd-p/Cortex_XSOAR_Discussions",
+    "email": "",
+    "created": "2020-09-05T15:43:54Z",
+    "categories": [
+        "Data Enrichment & Threat Intelligence"
+    ],
+    "tags": [
+        "Phishing",
+        "ThreatIntel",
+        "Transparency",
+        "Certificates"
+    ],
+    "useCases": [],
+    "keywords": [],
+    "githubUser": [
+        "d3vzer0"
+    ],
+    "dependencies": {},
+    "displayedImages": []
+}

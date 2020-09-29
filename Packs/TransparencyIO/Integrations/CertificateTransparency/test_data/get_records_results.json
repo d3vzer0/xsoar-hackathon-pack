@@ -1,0 +1,19 @@
+{
+    "Issuer": {
+        "C": "GB",
+        "ST": "London",
+        "O": "Google UK Ltd.",
+        "OU": "Certificate Transparency",
+        "CN": "Merge Delay Intermediate 1"
+    },
+    "NotAfter": "20200604164110Z",
+    "NotBefore": "20170810204121Z",
+    "Serial": "1502397681837077", 
+    "Subject": {
+        "C": "GB",
+        "L": "London",
+        "O": "Google Certificate Transparency",
+        "SerialNumber": "1502397681837077"
+    },
+    "Fingerprint": "DB:7C:53:EA:53:06:30:DB:DF:5A:B7:89:63:72:4D:0D:76:6F:BE:EB",
+}

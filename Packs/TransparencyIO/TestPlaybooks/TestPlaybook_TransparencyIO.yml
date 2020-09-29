@@ -1,0 +1,345 @@
+id: TestPlaybook_TransparencyIO
+version: 64
+vcShouldKeepItemLegacyProdMachine: false
+name: TestPlaybook_TransparencyIO
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: dcb4cf39-80cd-4647-88a7-602aa94d88f4
+    type: start
+    task:
+      id: dcb4cf39-80cd-4647-88a7-602aa94d88f4
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "1"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "1":
+    id: "1"
+    taskid: 3f3f9a7b-fd43-4b60-8711-1ac216d9e532
+    type: regular
+    task:
+      id: 3f3f9a7b-fd43-4b60-8711-1ac216d9e532
+      version: -1
+      name: DeleteContext
+      script: DeleteContext
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "2"
+    scriptarguments:
+      all:
+        simple: "yes"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 200
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "2":
+    id: "2"
+    taskid: 5e23b913-5e48-4135-8c1b-16c1ca724c36
+    type: regular
+    task:
+      id: 5e23b913-5e48-4135-8c1b-16c1ca724c36
+      version: -1
+      name: get-operators
+      script: '|||get-operators'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "3"
+    scriptarguments:
+      File:
+        simple: log_list.json
+      Url:
+        simple: https://www.gstatic.com/ct/log_list/v2/
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 400
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "3":
+    id: "3"
+    taskid: 48bccfb4-6989-43d8-8170-38d58872b9c8
+    type: condition
+    task:
+      id: 48bccfb4-6989-43d8-8170-38d58872b9c8
+      version: -1
+      name: Verify Outputs
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "4"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Operator.Url
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Operator.Name
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Operator.Description
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 600
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "4":
+    id: "4"
+    taskid: 7cabc70e-9f68-4106-815e-910f15e3faab
+    type: regular
+    task:
+      id: 7cabc70e-9f68-4106-815e-910f15e3faab
+      version: -1
+      name: get-tree-size
+      script: '|||get-tree-size'
+      type: regular
+      iscommand: true
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "5"
+    scriptarguments:
+      Url:
+        simple: ${CertificateTransparency.Operator.Url}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 800
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "5":
+    id: "5"
+    taskid: c81bdcfb-1180-43f8-8807-e5a9f25246d6
+    type: condition
+    task:
+      id: c81bdcfb-1180-43f8-8807-e5a9f25246d6
+      version: -1
+      name: Verify Outputs
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "7"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Tree.Url
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Tree.Size
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Tree.Date
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Tree.RootHash
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1000
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "6":
+    id: "6"
+    taskid: f914b03c-a0e1-4597-8058-b5d672a991f0
+    type: title
+    task:
+      id: f914b03c-a0e1-4597-8058-b5d672a991f0
+      version: -1
+      name: Test Done
+      type: title
+      iscommand: false
+      brand: ""
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1610
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "7":
+    id: "7"
+    taskid: 21aeaef7-a108-4242-8614-10cc76a890e5
+    type: regular
+    task:
+      id: 21aeaef7-a108-4242-8614-10cc76a890e5
+      version: -1
+      name: get-records
+      description: Get records from CT operator log
+      script: CertificateTransparency|||get-records
+      type: regular
+      iscommand: true
+      brand: CertificateTransparency
+    nexttasks:
+      '#none#':
+      - "8"
+    scriptarguments:
+      End:
+        simple: ${CertificateTransparency.Tree.Size}
+      Start: {}
+      Url:
+        simple: ${CertificateTransparency.Tree.Url}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1180
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 1
+  "8":
+    id: "8"
+    taskid: 138590b2-450d-44df-8aaa-a43101561de4
+    type: condition
+    task:
+      id: 138590b2-450d-44df-8aaa-a43101561de4
+      version: -1
+      name: Verify Outputs
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "6"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Cert.Subject.CN
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Cert.NotAfter
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Cert.NotBefore
+            iscontext: true
+      - - operator: isNotEmpty
+          left:
+            value:
+              simple: CertificateTransparency.Cert.Fingerprint
+            iscontext: true
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1370
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1625,
+        "width": 380,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
+inputs: []
+outputs: []

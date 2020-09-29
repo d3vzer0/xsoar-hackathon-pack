@@ -1,0 +1,348 @@
+id: 7d558176-35bd-4da4-8f3c-71645a44a8b0
+version: 9
+vcShouldKeepItemLegacyProdMachine: false
+name: Example_MatchCertificateTransparency
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: 14d16fbe-c4af-44bd-8c74-f33754283b28
+    type: start
+    task:
+      id: 14d16fbe-c4af-44bd-8c74-f33754283b28
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "3"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "3":
+    id: "3"
+    taskid: e6f0464c-b632-4ac3-8236-4aeb6734b89b
+    type: regular
+    task:
+      id: e6f0464c-b632-4ac3-8236-4aeb6734b89b
+      version: -1
+      name: get-records
+      description: Get records from CT operator log
+      script: CertificateTransparency|||get-records
+      type: regular
+      iscommand: true
+      brand: CertificateTransparency
+    nexttasks:
+      '#none#':
+      - "6"
+    scriptarguments:
+      End:
+        simple: "948530560"
+      MaxLag:
+        simple: "500"
+      Start:
+        simple: "948530260"
+      Url:
+        simple: https://ct.googleapis.com/logs/argon2020
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 250
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "4":
+    id: "4"
+    taskid: 8d08b8a8-b41d-489d-8ea0-794664450854
+    type: title
+    task:
+      id: 8d08b8a8-b41d-489d-8ea0-794664450854
+      version: -1
+      name: Done
+      type: title
+      iscommand: false
+      brand: ""
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 880
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "6":
+    id: "6"
+    taskid: 0e6c572b-44f4-4c9e-832d-56ea3f8474ae
+    type: regular
+    task:
+      id: 0e6c572b-44f4-4c9e-832d-56ea3f8474ae
+      version: -1
+      name: ct-match-regex
+      description: Match common name of certificate using regex
+      script: CertificateTransparency|||ct-match-regex
+      type: regular
+      iscommand: true
+      brand: CertificateTransparency
+    nexttasks:
+      '#none#':
+      - "7"
+    scriptarguments:
+      Key:
+        complex:
+          root: CertificateTransparency.Cache
+          accessor: Key
+          transformers:
+          - operator: LastArrayElement
+      RegexList:
+        simple: testbankieren.*
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 460
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+  "7":
+    id: "7"
+    taskid: e1d9902f-1a17-4b31-8cdd-7aae8ad44d0b
+    type: regular
+    task:
+      id: e1d9902f-1a17-4b31-8cdd-7aae8ad44d0b
+      version: -1
+      name: createNewIncident
+      description: Create a new incident
+      script: Builtin|||createNewIncident
+      type: regular
+      iscommand: true
+      brand: Builtin
+    nexttasks:
+      '#none#':
+      - "4"
+    scriptarguments:
+      accountid: {}
+      accountname: {}
+      agentid: {}
+      app: {}
+      assetid: {}
+      attachmentcount: {}
+      attachmentextension: {}
+      attachmenthash: {}
+      attachmentid: {}
+      attachmentname: {}
+      attachmentsize: {}
+      attachmenttype: {}
+      blockedaction: {}
+      bugtraq: {}
+      city: {}
+      commandline: {}
+      country: {}
+      criticalassets: {}
+      customFields: {}
+      cve: {}
+      cvss: {}
+      dbotprediction: {}
+      dbotpredictionprobability: {}
+      dbottextsuggestionhighlighted: {}
+      dest: {}
+      desthostname: {}
+      destinationhostname: {}
+      destinationip: {}
+      destinationnetwork: {}
+      destinationport: {}
+      destntdomain: {}
+      destos: {}
+      details: {}
+      detectedexternalhosts: {}
+      detectedexternalips: {}
+      detectedinternalhosts: {}
+      detectedinternalips: {}
+      detectedusers: {}
+      detectionendtime: {}
+      detectionid: {}
+      detectionupdatetime: {}
+      detectionurl:
+        complex:
+          root: CertificateTransparency.Cert.Subject
+          accessor: CN
+          transformers:
+          - operator: FirstArrayElement
+      devicehash: {}
+      devicename: {}
+      duration: {}
+      emailauthenticitycheck: {}
+      emailbcc: {}
+      emailbody: {}
+      emailbodyformat: {}
+      emailbodyhtml: {}
+      emailcc: {}
+      emailclassification: {}
+      emailclientname: {}
+      emailfrom: {}
+      emailheaders: {}
+      emailhtml: {}
+      emailinreplyto: {}
+      emailkeywords: {}
+      emailmessageid: {}
+      emailreceived: {}
+      emailreplyto: {}
+      emailreturnpath: {}
+      emailsenderip: {}
+      emailsize: {}
+      emailsource: {}
+      emailsubject: {}
+      emailto: {}
+      emailtocount: {}
+      emailurlclicked: {}
+      employeedisplayname: {}
+      employeeemail: {}
+      employeemanageremail: {}
+      entryIDs: {}
+      eventid: {}
+      eventtype: {}
+      externaladdresses: {}
+      filehash: {}
+      filename: {}
+      filepath: {}
+      filesize: {}
+      firstname: {}
+      firstseen: {}
+      helloworldid: {}
+      helloworldstatus: {}
+      helloworldtype: {}
+      hostname: {}
+      infectedhosts: {}
+      internaladdresses: {}
+      investigationstage: {}
+      isolated: {}
+      labels: {}
+      lastmodifiedby: {}
+      lastmodifiedon: {}
+      lastname: {}
+      lastseen: {}
+      logsource: {}
+      macaddress: {}
+      maliciousbehavior: {}
+      malwarefamily: {}
+      mobiledevicemodel: {}
+      name:
+        simple: 'Potential Phishing Website: ${CertificateTransparency.Cert.Subject.CN}'
+      occurred: {}
+      os: {}
+      osversion: {}
+      owner: {}
+      parentprocessid: {}
+      phase: {}
+      phishingsubtype: {}
+      phonenumber: {}
+      pid: {}
+      policydeleted: {}
+      policydescription: {}
+      policydetails: {}
+      policyid: {}
+      policyrecommendation: {}
+      policyremediable: {}
+      policyseverity: {}
+      policytype: {}
+      protocol: {}
+      protocols: {}
+      quarantined: {}
+      rating: {}
+      region: {}
+      regionid: {}
+      reporteremailaddress: {}
+      resourceid: {}
+      resourcename: {}
+      resourcetype: {}
+      riskrating: {}
+      riskscore: {}
+      roles: {}
+      samaccountname: {}
+      severity:
+        simple: Low
+      signature: {}
+      skuname: {}
+      skutier: {}
+      sla: {}
+      slaField: {}
+      sourcehostname: {}
+      sourceip: {}
+      sourcenetwork: {}
+      sourceport: {}
+      sourceusername: {}
+      src: {}
+      srchostname: {}
+      srcntdomain: {}
+      srcos: {}
+      srcuser: {}
+      subtype: {}
+      systems: {}
+      tenantname: {}
+      terminatedaction: {}
+      threatactor: {}
+      triggeredsecurityprofile: {}
+      type:
+        simple: BrandAbuse
+      uniqueports: {}
+      urlsslverification: {}
+      user: {}
+      useraccountcontrol: {}
+      username: {}
+      vendorid: {}
+      vendorproduct: {}
+      vulnerabilitycategory: {}
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 660
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 895,
+        "width": 380,
+        "x": 450,
+        "y": 50
+      }
+    }
+  }
+inputs: []
+outputs: []
+sourceplaybookid: 37c3851e-913d-49f3-8a0b-ec5229dc8f46

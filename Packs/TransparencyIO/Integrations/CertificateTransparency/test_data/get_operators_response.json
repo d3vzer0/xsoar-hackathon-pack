@@ -1,0 +1,28 @@
+{
+  "operators": [
+    {
+      "name": "Exampleop",
+      "email": [
+        "exampleop@yourmailhere.com"
+      ],
+      "logs": [
+        {
+          "description": "Exampleop 2020 log",
+          "log_id": "sh4FzIuizYogTodm+Su5iiUgZ2va+nDnsklTLe+LkF4=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE6Tx2p1yKY4015NyIYvdrk36es0uAc1zA4PQ+TGRY+3ZjUTIYY9Wyu+3q/147JG4vNVKLtDWarZwVqGkg6lAYzA==",
+          "url": "https://ct.exampleop.com/logs/2020/",
+          "mmd": 86400,
+          "state": {
+            "usable": {
+              "timestamp": "2018-06-15T02:30:13Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2020-01-01T00:00:00Z",
+            "end_exclusive": "2021-01-01T00:00:00Z"
+          }
+        }
+      ]
+    }
+  ]
+}
